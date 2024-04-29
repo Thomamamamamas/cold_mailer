@@ -8,7 +8,8 @@ dotenv.config({ path: '../.env' });
 
 const	app = express();
 
-const	categoryRouter = require('./routes/mailRoutes');
+const	mailRouter = require('./routes/mailRoutes');
+const	ContactRouter = require('./routes/contactRoutes');
 
 app.use(helmet())
 
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 	}
 });
 
-app.use('/api/mail', categoryRouter);
+app.use('/api/mail', mailRouter);
+app.use('/api/contact', ContactRouter);
 
 module.exports = app;
