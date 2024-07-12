@@ -59,6 +59,7 @@ exports.sendMail = async (req, res, next) => {
 exports.sendMails = async (req, res, next) => {
 	try {
 		let recipients = [];
+		let	recipients_mail = [];
 
 		if (!req.body.template || !req.body.nb_contact) {
 			return res.status(401).json({
@@ -67,10 +68,11 @@ exports.sendMails = async (req, res, next) => {
 			});
 		}
 		if (!req.body.recipients) {
-			let tmp = await Contact.find({category: { $in: req.body.categories }});
+			let tmp = await Contact.find({category: { $in: req.body.categories }, first_contact: false});
 			tmp.forEach(item => {
 				if (MailIsViable(item.mail, recipients_mail) == true && recipients_mail.length < req.body.nb_contact) {
 					recipients.push({_id: item._id, name: item.name, mail: item.mail})
+					recipients_mail.push(item.mail)
 				}
 			})
 		}
